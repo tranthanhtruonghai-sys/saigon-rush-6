@@ -95,9 +95,9 @@ html.rot #go{padding:10px 40px;font-size:20px;margin-top:4px}
 #bJump{width:62px;height:62px;right:calc(env(safe-area-inset-right) + 206px);bottom:calc(env(safe-area-inset-bottom) + 100px);background:rgba(90,120,255,.55)}
 @media (orientation:portrait){#bLook,#bWep{bottom:calc(env(safe-area-inset-bottom) + 236px)!important}#bMute{right:calc(env(safe-area-inset-right) + 16px)!important}#bPause{right:calc(env(safe-area-inset-right) + 62px)!important}#bMenu{right:calc(env(safe-area-inset-right) + 108px)}#bChat{right:calc(env(safe-area-inset-right) + 154px)}#bLook{right:calc(env(safe-area-inset-right) + 200px)}#bWep{right:calc(env(safe-area-inset-right) + 246px)}}
 #wepLbl{position:fixed;right:calc(env(safe-area-inset-right) + 200px);bottom:calc(env(safe-area-inset-bottom) + 4px);width:70px;text-align:center;color:#fff;font-size:10px;font-weight:900;text-shadow:0 1px 0 #000;pointer-events:none}
-#php{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 8px);width:120px;height:10px;border-radius:5px;background:rgba(0,0,0,.45);border:1.5px solid rgba(255,255,255,.6);overflow:hidden;pointer-events:none}
+#php{position:fixed;left:calc(50% - 94px);top:calc(env(safe-area-inset-top) + 8px);width:120px;height:10px;border-radius:5px;background:rgba(0,0,0,.45);border:1.5px solid rgba(255,255,255,.6);overflow:hidden;pointer-events:none}
 #php i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ff3b30,#ff7b7b)}
-#phpT{position:fixed;left:calc(50% + 66px);top:calc(env(safe-area-inset-top) + 4px);color:#fff;font-weight:900;font-size:12px;text-shadow:0 1px 0 #000;pointer-events:none}
+#phpT{position:fixed;left:calc(50% + 32px);top:calc(env(safe-area-inset-top) + 4px);color:#fff;font-weight:900;font-size:12px;text-shadow:0 1px 0 #000;pointer-events:none}
 #chatLog{position:fixed;left:calc(env(safe-area-inset-left) + 12px);top:calc(env(safe-area-inset-top) + 142px);max-width:min(330px,55vw);pointer-events:none;color:#fff;font-size:12px;font-weight:700;line-height:1.35}
 #chatLog div{background:rgba(0,0,0,.45);padding:2px 7px;border-radius:8px;margin-bottom:3px;width:fit-content;max-width:100%;overflow-wrap:anywhere}
 #chatLog b{color:#7fe9ff}
@@ -114,7 +114,7 @@ html.rot #go{padding:10px 40px;font-size:20px;margin-top:4px}
 body.inscene #bShoot,body.inscene #bMission,body.inscene #bWep,body.inscene #bLook,body.inscene #wepLbl{display:none!important}
 #bMute,#bPause,#bLook,#bWep,#bMission,#bLb{display:none!important}
 #bMenu,#bChat{bottom:auto!important;top:calc(env(safe-area-inset-top) + 92px);width:42px;height:42px;font-size:19px}
-#bMenu{right:calc(env(safe-area-inset-right) + 16px)!important}#bChat{right:calc(env(safe-area-inset-right) + 66px)!important}
+#bMenu,#bChat{top:calc(env(safe-area-inset-top) + 2px)!important;right:auto!important;width:38px!important;height:38px!important}#bMenu{left:calc(50% + 124px)}#bChat{left:calc(50% + 80px)}
 #bJump{right:calc(env(safe-area-inset-right) + 24px)!important;bottom:calc(env(safe-area-inset-bottom) + 126px)!important;width:64px;height:64px}
 #bMenu.glow{animation:pulse 1s infinite}
 #fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .35s;z-index:8}

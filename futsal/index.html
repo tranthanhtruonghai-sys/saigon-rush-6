@@ -51,7 +51,10 @@ body{color:var(--ink);font:16px/1.35 "Baloo 2",system-ui,sans-serif;user-select:
 @keyframes glow{50%{box-shadow:0 0 0 7px #ffd23f66,0 0 26px #ffd23f,0 8px 18px #0008}}
 #enbar{position:absolute;left:50%;top:calc(max(4px,env(safe-area-inset-top)) + 38px);transform:translateX(-50%);display:flex;gap:8px;z-index:2;pointer-events:none}
 .eb{width:96px;height:8px;border-radius:5px;background:#071327d0;border:1.5px solid #ffffff50;overflow:hidden}
-.eb i{display:block;height:100%;width:0;transition:width .2s}#e0 i{background:linear-gradient(90deg,#ff3b5c,#ffb03b);margin-left:auto}#e1 i{background:linear-gradient(90deg,#ffd23f,#fff59a)}
+.eb i{display:block;height:100%;width:0;transition:width .2s}#e0 i{background:linear-gradient(90deg,#ff3b5c,#ffd23f)}#e1 i{background:linear-gradient(90deg,#ffd23f,#fff59a)}
+#enl{font:800 10.5px "Baloo 2",sans-serif;background:#071327d0;border-radius:999px;padding:0 8px;line-height:12px;color:#ffd23f;align-self:center}
+#bS.dim{filter:grayscale(.7);opacity:.6}
+.skp{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 2px}.skp button{min-height:40px;border-radius:12px;border:2px solid #3b6cb3;background:#123566;color:#fff;font:700 13px "Baloo 2",sans-serif;cursor:pointer;padding:0 4px}.skp button[aria-pressed=true]{background:#ffd23f;color:#2b2100;border-color:#ffd23f}.skl{font-size:12.5px;color:#c7d5f2;margin-top:6px;text-align:left}
 .eb.full{border-color:#fff;box-shadow:0 0 10px #ffd23f}
 #ult{position:absolute;left:0;right:0;top:15%;text-align:center;font:800 clamp(34px,7vw,58px)/1 "Baloo 2",sans-serif;-webkit-text-stroke:2px #071327;text-shadow:0 5px 0 #071327,0 0 30px currentColor;pointer-events:none;opacity:0;z-index:3}
 #ult.ultgo{animation:ultIn 1.4s ease-out}
@@ -107,7 +110,7 @@ input:focus-visible,button:focus-visible{outline:3px solid #fff;outline-offset:2
   </div>
   <div id="hud"><span class="dot" style="background:var(--red)"></span><span id="l0">Bạn</span> <span class="sc"><span id="s0">0</span>–<span id="s1">0</span></span> <span id="l1">Máy</span> <span class="dot" style="background:var(--yel)"></span><span id="clock">3:00</span></div>
   <div id="netbadge" hidden></div>
-  <div id="enbar"><div class="eb" id="e0"><i></i></div><div class="eb" id="e1"><i></i></div></div>
+  <div id="enbar"><span id="enl">Sút lửa</span><div class="eb" id="e0"><i></i></div><div class="eb" id="e1"><i></i></div></div>
   <div id="ult"></div>
   <div id="flash">VÀOOO!</div>
   <div id="joy"><div id="knob"></div></div>
@@ -126,6 +129,8 @@ CHIÊU</span></button>
     <div class="card">
       <h1>Futsal <b>Mini</b> 5v5</h1>
       <button class="sm fun" id="fun" aria-pressed="true">Chế độ vui: búa &amp; cờ lê · BẬT</button>
+      <div class="skl">Tuyệt chiêu của bạn (dùng khi thanh năng lượng đầy):</div>
+      <div class="skp" role="group" aria-label="Chọn tuyệt chiêu"><button data-k="1">Sút lửa</button><button data-k="2">Thần tốc</button><button data-k="3">Đóng băng</button><button data-k="4">Nam châm</button></div>
       <div class="tabs" role="tablist">
         <button role="tab" id="tSolo" aria-selected="true">Chơi với máy</button>
         <button role="tab" id="tOn" aria-selected="false">Chơi online</button>
@@ -145,7 +150,7 @@ CHIÊU</span></button>
         <div class="msg" id="onmsg">Đang kết nối…</div>
         <div id="rooms"></div>
       </section>
-      <div class="keys">Nút tự đổi theo tình huống: tấn công (Sút · Chuyền · Chọc khe) và phòng ngự (Xoạc · Đổi người · Áp sát). Giữ Tăng tốc để chạy nhanh.<br>Máy tính: mũi tên/WASD · Space sút/xoạc · X chuyền/đổi · C chọc khe/áp sát · Shift tăng tốc · V gõ/ném · F tuyệt chiêu<br>Thanh năng lượng dưới bảng tỉ số đầy thì bấm TUYỆT CHIÊU: có bóng gần khung thành → Sút lửa; có bóng ở xa → Thần tốc; không có bóng → Đóng băng đối thủ.</div>
+      <div class="keys">Nút tự đổi theo tình huống: tấn công (Sút · Chuyền · Chọc khe) và phòng ngự (Xoạc · Đổi người · Áp sát). Giữ Tăng tốc để chạy nhanh.<br>Máy tính: mũi tên/WASD · Space sút/xoạc · X chuyền/đổi · C chọc khe/áp sát · Shift tăng tốc · V gõ/ném · F tuyệt chiêu<br>Sút lửa: cần có bóng · Thần tốc: chạy siêu nhanh 3 giây · Đóng băng: đối thủ đứng im 2 giây · Nam châm: hút bóng về chân bạn.</div>
     </div>
   </div>
 
@@ -184,11 +189,11 @@ CHIÊU</span></button>
 </script>
 <script>
 {
-const W=640,H=360,L=30,R=610,T=24,B=336,CY=180,CX=(L+R)/2,GW=36,GD=18,PR=85,MATCH=180;
+const W=814,H=454,L=30,R=784,T=24,B=430,CY=227,CX=(L+R)/2,GW=38,GD=18,PR=95,MATCH=180,GS=.8;
 const app=document.getElementById('app'),cv=document.getElementById('cv'),ctx=cv.getContext('2d');
 const $=id=>document.getElementById(id);
 let level=1,state='menu',score=[0,0],time=MATCH,flashT=0,last=0,rot=false,nextKick=0;
-let mode='solo';let ULTSHOW=0;let funny=true,itemT=5,nowT=0;const tools=[],projs=[],pops=[];const en=[0,0];let ultT=0;const trail=[];
+let mode='solo';let ULTSHOW=0,cEn=0;let funny=true,itemT=5,nowT=0;const tools=[],projs=[],pops=[];const en=[0,0];let ultT=0;const trail=[];
 const SPD={me:172,mate:145,ai:[118,142,162],k:[110,135,160],steal:[.35,.55,.8],miss:[1,.65,.35]};
 const COL=[['#3ddc97','#ff3b5c'],['#a78bfa','#ffd23f']];
 const FORM=[[.2,.5,4],[.38,.2,7],[.38,.8,11],[.6,.5,9]];
@@ -205,7 +210,7 @@ function layout(){const vv=window.visualViewport,vw=Math.round(vv?vv.width:inner
   app.style.width=(rot?vh:vw)+'px';app.style.height=(rot?vw:vh)+'px';fit();}
 const Z=1.42,cam={x:CX,y:CY,S:1,vw:W,vh:H,w:W,h:H};let DPR=1,bgR=[0,0,W,H];
 function fit(){const w=app.clientWidth,h=app.clientHeight;if(!w||!h)return;const d=Math.min(devicePixelRatio||1,3);DPR=d;cv.width=Math.round(w*d);cv.height=Math.round(h*d);
-  cam.S=Math.min(w/W,h/H)*Z;cam.vw=w/cam.S;cam.vh=h/cam.S;cam.w=w;cam.h=h;
+  cam.S=Math.min(w/640,h/360)*Z;cam.vw=w/cam.S;cam.vh=h/cam.S;cam.w=w;cam.h=h;
   const x0=Math.min(L-60,CX-cam.vw/2)-4,y0=Math.min(T-45,CY-cam.vh/2)-4;bgR=[x0,y0,2*CX-x0,2*CY-y0];view=bgR.slice();buildBg();}
 function camUpdate(dt){const tx=ball.x+ball.vx*.12,ty=ball.y+ball.vy*.1,k=Math.min(1,dt*4);cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k;
   const hx=cam.vw/2,hy=cam.vh/2,x0=L-60,x1=R+60,y0=T-45,y1=B+45;
@@ -262,6 +267,7 @@ function snd(name,v){if(!AU.c||!AU.on)return;try{switch(name){
   case 'ult':{const c=(num(v)|0)%10;tone('sawtooth',110,55,.6,.12);nz(.6,'lowpass',400,.7,.35);AU.cheer=1;
     if(c===1){nz(1.1,'bandpass',900,.6,.25,.05);tone('square',220,880,.5,.06,.05);}
     if(c===2){tone('sine',300,1800,.45,.12);nz(.4,'highpass',2000,.7,.1);}
+    if(c===4){tone('sine',180,90,.8,.12);tone('sine',360,720,.8,.05);for(let i=0;i<5;i++)tone('triangle',1200+i*150,1600+i*150,.12,.04,i*.1);}
     if(c===3){for(let i=0;i<8;i++)tone('sine',2000+Math.random()*2500,1800+Math.random()*2000,.25,.05,i*.06);nz(.2,'highpass',4000,.7,.15,.45);}
     break;}
   case 'pickup':tone('square',660,660,.06,.06);tone('square',880,880,.06,.06,.07);tone('square',1320,1320,.1,.06,.14);break;}}catch(e){}}
@@ -313,13 +319,13 @@ let humans=new Map();const lastSeen={};
 function isHuman(p){for(const [i] of humans)if(ps[i]===p)return true;return false;}
 function nearest(team,skipHuman){let b=null,bd=1e9;for(const p of ps)if(p.team===team&&p.role==='f'&&!(p.koT>0)&&!(skipHuman&&isHuman(p))){const d=dist(p,ball);if(d<bd){bd=d;b=p;}}return b;}
 function nearOpp(p){let b=null,bd=1e9;for(const o of ps)if(o.team!==p.team){const d=dist(o,p);if(d<bd){bd=d;b=o;}}return [b,bd];}
-function setOwner(p){if(owner===p)return;if(p.role==='k'&&Math.hypot(ball.vx,ball.vy)>250)fx('save');if(ball.lastPass&&ball.lastTeam===p.team&&p.role==='f')addEn(p.team,.06);ball.lastPass=false;owner=p;p.hold=0;
+function setOwner(p){if(owner===p)return;if(p.role==='k'&&Math.hypot(ball.vx,ball.vy)>250)fx('save');if(ball.lastPass&&ball.lastTeam===p.team&&p.role==='f')addEn(p.team,.06,p);ball.lastPass=false;owner=p;p.hold=0;
   if(mode==='solo'){if(p.team===0&&p.role==='f')me=p;else if(p.team===1){const n=nearest(0,false);if(n)me=n;}}}
 function kick(p,tx,ty,pw,pass){const dx=tx-ball.x,dy=ty-ball.y,m=Math.hypot(dx,dy)||1;owner=null;ball.lastTeam=p.team;ball.lastPass=!!pass;ball.air=0;ball.fire=0;ball.vx=dx/m*pw;ball.vy=dy/m*pw;p.cool=.35;p.kickT=.18;
   fx(pass?'pass':'kick',cl((pw-280)/400,0,1));}
 function passTo(p,dir){let best=null,bs=-1e9;
   for(const q of ps){if(q.team!==p.team||q===p||q.role!=='f')continue;
-    const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<30||d>380)continue;
+    const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<30||d>470)continue;
     let open=80,lane=0;
     for(const o of ps){if(o.team===p.team)continue;open=Math.min(open,dist(o,q));
       const t=cl(((o.x-p.x)*dx+(o.y-p.y)*dy)/(d*d),0,1);if(Math.hypot(p.x+dx*t-o.x,p.y+dy*t-o.y)<14&&t>.1)lane-=120;}
@@ -328,7 +334,7 @@ function passTo(p,dir){let best=null,bs=-1e9;
   if(!best)return false;
   const tx=best.x+best.vx*.35,ty=best.y+best.vy*.35;best.runT=.7;best.runX=tx;best.runY=ty;kick(p,tx,ty,Math.min(300+Math.hypot(tx-ball.x,ty-ball.y)*.87,620),true);return true;}
 function throughPass(p,dir){const ad=p.team?-1:1;let best=null,bs=-1e9;
-  for(const q of ps){if(q.team!==p.team||q===p||q.role!=='f')continue;const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<25||d>420)continue;
+  for(const q of ps){if(q.team!==p.team||q===p||q.role!=='f')continue;const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<25||d>520)continue;
     let open=80;for(const o of ps)if(o.team!==p.team)open=Math.min(open,dist(o,q));
     const s=dx*ad*.8-d*.15+((dx*dir[0]+dy*dir[1])/d)*220+open*.6;if(s>bs){bs=s;best=q;}}
   if(!best)return false;
@@ -357,7 +363,7 @@ function showGoal(team){$('s0').textContent=score[0];$('s1').textContent=score[1
 function steer(p,tx,ty,sp){const dx=tx-p.x,dy=ty-p.y,m=Math.hypot(dx,dy);if(m<3){p.vx=p.vy=0;return;}const s=Math.min(sp,m*6);p.vx=dx/m*s;p.vy=dy/m*s;}
 const aiSp=p=>mode==='solo'?(p.team?SPD.ai[level]:SPD.mate):145;
 
-function ownerAI(p,sp,dt){p.hold+=dt;const gx=p.team?L:R,d=Math.hypot(gx-p.x,CY-p.y),[o,od]=nearOpp(p),far=mode==='solo'&&p.team?175:200;
+function ownerAI(p,sp,dt){p.hold+=dt;const gx=p.team?L:R,d=Math.hypot(gx-p.x,CY-p.y),[o,od]=nearOpp(p),far=mode==='solo'&&p.team?215:245;
   if(d<far&&(od>30||d<120)&&p.hold>.15){aiShoot(p);return;}
   if((od<40&&p.hold>.35)||p.hold>1.8){if(passTo(p,null))return;if(p.hold>2.4){aiShoot(p);return;}}
   let dx=gx-p.x,dy=(CY*.6+p.y*.4)-p.y;const m=Math.hypot(dx,dy)||1;dx/=m;dy/=m;
@@ -383,19 +389,25 @@ function useItem(p){if(!p.item||p.swingT>0||p.koT>0)return;
   if(p.item===1){p.swingT=.3;let best=null,bd=1e9;
     for(const o of ps){if(o.team===p.team||o.koT>0||o.immT>0)continue;const dx=o.x-p.x,dy=o.y-p.y,d=Math.hypot(dx,dy);if(d>32)continue;
       if((d<18||(dx*p.fx+dy*p.fy)/(d||1)>.1)&&d<bd){bd=d;best=o;}}
-    if(best){ko(best,2.2,p.fx*120,p.fy*120);addEn(p.team,.1);}else fx('swing');}
+    if(best){ko(best,2.2,p.fx*120,p.fy*120);addEn(p.team,.1,p);}else fx('swing');}
   else{projs.push({x:p.x+p.fx*12,y:p.y+p.fy*12,vx:p.fx*400,vy:p.fy*400,t:.8,team:p.team,r:0});fx('throw');}
   if(--p.uses<=0)p.item=0;}
 /* ===== NĂNG LƯỢNG & TUYỆT CHIÊU ===== */
-function addEn(t,v){en[t]=cl(en[t]+v,0,1);}
+const hEn={},hSk={};let mySkill=1;try{mySkill=cl(+localStorage.getItem('fs_sk')||1,1,4)|0;}catch(e){}
+function addEn(t,v,p){if(teamHasHuman(t)){for(const [i,h] of humans){if(ps[i].team!==t)continue;hEn[h.key]=cl((hEn[h.key]||0)+(p&&ps[i]!==p?v*.5:v),0,1);}}else en[t]=cl(en[t]+v,0,1);}
+function humanUlt(p,key){if((hEn[key]||0)<1||state!=='play'||p.koT>0||p.frozenT>0)return;if(doSkill(p,hSk[key]||1))hEn[key]=0;}
+function doSkill(p,sk){const t=p.team;
+  if(sk===1){if(owner!==p)return false;kick(p,t?L-20:R+20,CY+(Math.random()<.5?-1:1)*GW*.62,900);ball.fire=1.3;fx('ult',1+t*10);return true;}
+  if(sk===2){p.boostT=3;fx('ult',2+t*10);return true;}
+  if(sk===3){for(const o of ps)if(o.team!==t&&o.role==='f'){o.frozenT=2;o.slideT=0;o.runT=0;}fx('ult',3+t*10);return true;}
+  if(sk===4){if(owner===p||(owner&&owner.role==='k'))return false;if(owner){owner.cool=.8;owner=null;}ball.mag=ps.indexOf(p);ball.magT=1.3;ball.air=0;ball.fire=0;fx('ult',4+t*10);return true;}
+  return false;}
 function teamHasHuman(t){for(const [i] of humans)if(ps[i].team===t)return true;return false;}
-function ult(p){const t=p.team;if(en[t]<1||state!=='play'||p.koT>0||p.frozenT>0)return;en[t]=0;
-  if(owner===p){const gx=t?L:R;if(Math.hypot(gx-p.x,CY-p.y)<340){kick(p,t?L-20:R+20,CY+(Math.random()<.5?-1:1)*GW*.62,900);ball.fire=1.3;fx('ult',1+t*10);}
-    else{p.boostT=3;fx('ult',2+t*10);}}
-  else{for(const o of ps)if(o.team!==t&&o.role==='f'){o.frozenT=2;o.slideT=0;o.runT=0;}fx('ult',3+t*10);}}
 function aiUlt(){for(const t of [0,1]){if(en[t]<1||teamHasHuman(t))continue;
-  if(owner&&owner.team===t&&owner.role==='f'&&Math.hypot((t?L:R)-owner.x,CY-owner.y)<300)ult(owner);
-  else if(owner&&owner.team!==t&&Math.hypot((t?R:L)-owner.x,CY-owner.y)<260){const n=nearest(t,false);if(n)ult(n);}}}
+  if(owner&&owner.team===t&&owner.role==='f'&&Math.hypot((t?L:R)-owner.x,CY-owner.y)<360){if(doSkill(owner,1))en[t]=0;}
+  else if(owner&&owner.team!==t&&owner.role==='f'&&Math.hypot((t?R:L)-owner.x,CY-owner.y)<320){const n=nearest(t,false);if(n&&doSkill(n,Math.random()<.5?3:4))en[t]=0;}}}
+function magTick(dt){if(!(ball.magT>0))return;ball.magT-=dt;const m=ps[ball.mag];if(owner||!m){ball.magT=0;return;}
+  const dx=m.x-ball.x,dy=m.y-ball.y,d=Math.hypot(dx,dy)||1,v=Math.min(620,d*9);ball.vx=dx/d*v;ball.vy=dy/d*v;if(d<14){ball.magT=0;setOwner(m);}}
 function clearBall(k){const tx=toX(k.team,.6+Math.random()*.28),ty=T+30+Math.random()*(B-T-60);kick(k,tx,ty,600+Math.random()*80);ball.air=ball.airMax=.6;
   if(Math.random()<.3)speak(['Thủ môn phá bóng!','Phát bóng dài lên!'][(Math.random()*2)|0]);}
 function ko(o,dur,bx,by){o.koT=dur;o.immT=dur+1.2;o.slideT=0;o.runT=0;o.cool=dur;o.item=0;
@@ -414,14 +426,14 @@ function aiItem(p,dt){p.aiCd-=dt;if(!p.item||p.aiCd>0||p.swingT>0)return;
   if(p.item===1&&d<26&&(cand===tgt||Math.random()<.3)){p.fx=(cand.x-p.x)/d;p.fy=(cand.y-p.y)/d;useItem(p);p.aiCd=.8/lv;}
   else if(p.item===2&&d>40&&d<230&&(cand===tgt||Math.random()<.15)){const tx=cand.x+cand.vx*d/1600,ty=cand.y+cand.vy*d/1600,m=Math.hypot(tx-p.x,ty-p.y)||1;p.fx=(tx-p.x)/m;p.fy=(ty-p.y)/m;useItem(p);p.aiCd=1.2/lv;}
   else p.aiCd=.25;}
-const ULT=['','SÚT LỬA!','THẦN TỐC!','ĐÓNG BĂNG!'],ULTC=['','#ff7a1f','#ffd23f','#7fd8ff'];
+const ULT=['','SÚT LỬA!','THẦN TỐC!','ĐÓNG BĂNG!','NAM CHÂM!'],ULTC=['','#ff7a1f','#ffd23f','#7fd8ff','#c084fc'],SKN=['','Sút lửa','Thần tốc','Đóng băng','Nam châm'];
 function evt(name,v){if(name==='ult'){const c=(num(v)|0)%10,t=(num(v)|0)>=10?1:0;showUlt(c,t);}if(name==='bonk'){const o=ps[num(v)|0];if(o){pops.push({x:o.x,y:o.y-26,b:nowT,txt:['BỐP!','CỐP!','BOONG!','ỐI!'][(Math.random()*4)|0]});
     if(Math.random()<.35)speak(['Ối! Xỉu luôn rồi!','Cú gõ trời giáng!','Nằm im luôn!'][(Math.random()*3)|0]);}}snd(name,v);}
 function controlHuman(p,I,key,dt){const ls=lastSeen[key]||(lastSeen[key]={s:I.s,p:I.p,t:I.t,k:I.k,sw:I.sw,h:I.h,u:I.u});
   const ev=n=>{if(I[n]!==ls[n]){ls[n]=I[n];return true;}return false;};
   const eS=ev('s'),eP=ev('p'),eT=ev('t'),eK=ev('k'),eW=ev('sw'),eH=ev('h'),eU=ev('u');
   if(eW){switchHuman(p,key);return;}
-  if(eU)ult(p);
+  if(eU)humanUlt(p,key);
   if(p.koT>0||p.frozenT>0)return;if(eH)useItem(p);
   if(p.slideT>0||p.downT>0)return;
   const mx=cl(num(I.x),-1,1),my=cl(num(I.y),-1,1),moving=Math.hypot(mx,my)>.2,spr=!!I.sp&&p.stam>.05&&moving;
@@ -436,8 +448,8 @@ function controlHuman(p,I,key,dt){const ls=lastSeen[key]||(lastSeen[key]={s:I.s,
 function simulate(dt){
   if(state==='goal'){flashT-=dt;moveBall(dt);if(flashT<=0){$('flash').style.opacity=0;state='play';kickoff(nextKick);fx('kickoff');}return;}
   if(state!=='play')return;
-  time-=dt;if(time<=0){time=0;finish();return;}
-  if(mode==='solo')humans=new Map([[ps.indexOf(me),{I:inp,key:'local'}]]);
+  time-=dt/GS;if(time<=0){time=0;finish();return;}
+  if(mode==='solo'){humans=new Map([[ps.indexOf(me),{I:inp,key:'local'}]]);hSk.local=mySkill;}
   for(const [i,h] of humans)controlHuman(ps[i],h.I,h.key,dt);
   const ch=[nearest(0,true),nearest(1,true)],hd=[1e9,1e9];
   for(const [i] of humans){const p=ps[i];hd[p.team]=Math.min(hd[p.team],dist(p,ball));}
@@ -445,7 +457,7 @@ function simulate(dt){
   for(const p of ps){
     if(p.slideT>0){p.slideT-=dt;const f=Math.pow(.3,dt);p.vx*=f;p.vy*=f;
       if(!p.slideHit&&owner!==p&&dist(ball,p)<18){
-        if(owner&&owner.team!==p.team){if(Math.random()<.8){const o=owner;owner=null;o.cool=.6;o.downT=.35;ball.vx=p.fx*220+(Math.random()-.5)*90;ball.vy=p.fy*220+(Math.random()-.5)*90;p.slideHit=true;stealCd=.5;fx('tackle');addEn(p.team,.1);}}
+        if(owner&&owner.team!==p.team){if(Math.random()<.8){const o=owner;owner=null;o.cool=.6;o.downT=.35;ball.vx=p.fx*220+(Math.random()-.5)*90;ball.vy=p.fy*220+(Math.random()-.5)*90;p.slideHit=true;stealCd=.5;fx('tackle');addEn(p.team,.1,p);}}
         else if(!owner){ball.vx=p.fx*240;ball.vy=p.fy*240;p.slideHit=true;fx('tackle');}}
       if(p.slideT<=0){p.downT=p.slideHit?.2:.5;p.vx=p.vy=0;}}
     else if(p.downT>0){p.downT-=dt;p.vx=p.vy=0;}
@@ -459,14 +471,14 @@ function simulate(dt){
   stealCd-=dt;
   for(const p of ps){if(p.koT>0)continue;const d=dist(ball,p);
     if(owner&&owner!==p&&owner.team!==p.team&&d<16&&stealCd<=0&&!(owner.boostT>0)&&!(p.frozenT>0)){stealCd=.45;
-      const c=isHuman(p)?.72:p.role==='k'?.9:mode==='solo'?(p.team?SPD.steal[level]:.5):.55;if(Math.random()<c||(owner.frozenT>0)){setOwner(p);p.cool=0;fx('steal');addEn(p.team,.1);}}
+      const c=isHuman(p)?.72:p.role==='k'?.9:mode==='solo'?(p.team?SPD.steal[level]:.5):.55;if(Math.random()<c||(owner.frozenT>0)){setOwner(p);p.cool=0;fx('steal');addEn(p.team,.1,p);}}
     else if(!owner&&p.cool<=0&&d<15){const bs=Math.hypot(ball.vx,ball.vy),lim=p.role==='k'?(mode==='solo'&&p.team?650+level*60:700):420;
-      if(ball.air>0&&p.role==='f'){}else if(ball.fire>0&&p.role==='f'){}
+      if(ball.magT>0&&p!==ps[ball.mag]){}else if(ball.air>0&&p.role==='f'){}else if(ball.fire>0&&p.role==='f'){}
       else if(ball.fire>0&&p.role==='k'){if(Math.random()<.25){ball.vx*=-.4;ball.vy*=-.4;ball.fire=0;p.cool=.3;fx('save');}else p.cool=.5;}
       else if(bs<lim)setOwner(p);
       else{const nx=(ball.x-p.x)/d,ny=(ball.y-p.y)/d,dot=ball.vx*nx+ball.vy*ny;if(dot<0){ball.vx=(ball.vx-2*dot*nx)*.55;ball.vy=(ball.vy-2*dot*ny)*.55;}p.cool=.2;fx('bounce');}}}
   {const rate=[mode==='solo'?1:1,mode==='solo'?[.6,.85,1.1][level]:1];for(const t of [0,1])addEn(t,.028*rate[t]*dt);}
-  aiUlt();ball.fire=Math.max(0,(ball.fire||0)-dt);ball.air=Math.max(0,(ball.air||0)-dt);
+  aiUlt();magTick(dt);ball.fire=Math.max(0,(ball.fire||0)-dt);ball.air=Math.max(0,(ball.air||0)-dt);
   if(funny)funnyTick(dt);
   moveBall(dt);}
 
@@ -498,7 +510,7 @@ const SKIN=['#f1c7a3','#d9a57c','#b9805a','#f6d5b8'],HAIR=['#1b1410','#3b2416','
 ps.forEach((p,i)=>{p.skin=SKIN[(i*7)%4];p.hair=HAIR[(i*5)%4];p.anim=0;p.kickT=0;p.sx=p.team?-1:1;});
 const bg=document.createElement('canvas');let view=[0,0,W,H],scorer=-1;
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
-function buildBg(){const [x0,y0,x1,y1]=bgR;let dens=Math.min(cam.S*DPR,4);const area=(x1-x0)*(y1-y0);if(area*dens*dens>9e6)dens=Math.sqrt(9e6/area);bg.width=Math.ceil((x1-x0)*dens);bg.height=Math.ceil((y1-y0)*dens);const c=bg.getContext('2d');c.setTransform(dens,0,0,dens,-x0*dens,-y0*dens);court(c);}
+function buildBg(){const [x0,y0,x1,y1]=bgR;let dens=Math.min(cam.S*DPR,4);const area=(x1-x0)*(y1-y0);if(area*dens*dens>7e6)dens=Math.sqrt(7e6/area);bg.width=Math.ceil((x1-x0)*dens);bg.height=Math.ceil((y1-y0)*dens);const c=bg.getContext('2d');c.setTransform(dens,0,0,dens,-x0*dens,-y0*dens);court(c);}
 function court(c){const [x0,y0,x1,y1]=view,P=Math.PI;
   let g=c.createLinearGradient(0,y0,0,y1);g.addColorStop(0,'#08142b');g.addColorStop(.5,'#0d1f3f');g.addColorStop(1,'#08142b');c.fillStyle=g;c.fillRect(x0-5,y0-5,x1-x0+10,y1-y0+10);
   /* khán giả */
@@ -524,16 +536,16 @@ function court(c){const [x0,y0,x1,y1]=view,P=Math.PI;
   /* mặt sân */
   const n=14,sw=(R-L)/n;for(let i=0;i<n;i++){c.fillStyle=i%2?'#1d6fd1':'#2279de';c.fillRect(L+i*sw,T,sw+.5,B-T);}
   c.strokeStyle='#ffffff10';c.lineWidth=1;for(let y=T+6;y<B;y+=6){c.beginPath();c.moveTo(L,y);c.lineTo(R,y);c.stroke();}
-  g=c.createRadialGradient(CX,CY-40,20,CX,CY,360);g.addColorStop(0,'#ffffff30');g.addColorStop(.6,'#ffffff00');g.addColorStop(1,'#00000040');c.fillStyle=g;c.fillRect(L,T,R-L,B-T);
+  g=c.createRadialGradient(CX,CY-40,20,CX,CY,470);g.addColorStop(0,'#ffffff30');g.addColorStop(.6,'#ffffff00');g.addColorStop(1,'#00000040');c.fillStyle=g;c.fillRect(L,T,R-L,B-T);
   for(const lx of [L+(R-L)*.22,CX,L+(R-L)*.78]){g=c.createRadialGradient(lx,T+40,2,lx,T+40,70);g.addColorStop(0,'#ffffff22');g.addColorStop(1,'#ffffff00');c.fillStyle=g;c.fillRect(L,T,R-L,B-T);}
   c.fillStyle='#ff8a3d33';
   c.beginPath();c.moveTo(L,CY-GW-PR);c.arc(L,CY-GW,PR,-P/2,0);c.lineTo(L+PR,CY+GW);c.arc(L,CY+GW,PR,0,P/2);c.closePath();c.fill();
   c.beginPath();c.moveTo(R,CY-GW-PR);c.arc(R,CY-GW,PR,-P/2,-P,true);c.lineTo(R-PR,CY+GW);c.arc(R,CY+GW,PR,P,P/2,true);c.closePath();c.fill();
   c.strokeStyle='#ffffffe8';c.lineWidth=2.4;c.shadowColor='#ffffff66';c.shadowBlur=3;
-  c.strokeRect(L,T,R-L,B-T);c.beginPath();c.moveTo(CX,T);c.lineTo(CX,B);c.stroke();c.beginPath();c.arc(CX,CY,45,0,7);c.stroke();
+  c.strokeRect(L,T,R-L,B-T);c.beginPath();c.moveTo(CX,T);c.lineTo(CX,B);c.stroke();c.beginPath();c.arc(CX,CY,56,0,7);c.stroke();
   c.beginPath();c.moveTo(L,CY-GW-PR);c.arc(L,CY-GW,PR,-P/2,0);c.lineTo(L+PR,CY+GW);c.arc(L,CY+GW,PR,0,P/2);c.stroke();
   c.beginPath();c.moveTo(R,CY-GW-PR);c.arc(R,CY-GW,PR,-P/2,-P,true);c.lineTo(R-PR,CY+GW);c.arc(R,CY+GW,PR,P,P/2,true);c.stroke();
-  c.shadowBlur=0;c.fillStyle='#fff';for(const [x,r] of [[CX,3],[L+70,2.4],[R-70,2.4]]){c.beginPath();c.arc(x,CY,r,0,7);c.fill();}
+  c.shadowBlur=0;c.fillStyle='#fff';for(const [x,r] of [[CX,3],[L+85,2.4],[R-85,2.4]]){c.beginPath();c.arc(x,CY,r,0,7);c.fill();}
   c.font='800 30px "Baloo 2",sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#ffffff14';c.fillText('FUTSAL',CX,CY);
   /* khung thành */
   for(const [gx,s] of [[L,-1],[R,1]]){const x0=s<0?gx-GD:gx;
@@ -604,7 +616,7 @@ function drawTool(c,type,x,y,ang,sc,flip){c.save();c.translate(x,y);c.rotate(ang
     c.strokeStyle='#4b5566';c.lineWidth=.6;c.stroke();c.beginPath();c.arc(0,4,2.3,0,7);c.fillStyle='#aeb8c8';c.fill();c.stroke();}
   c.restore();}
 function showUlt(c,t){const u=$('ult');u.textContent=ULT[c]||'';u.style.color=ULTC[c]||'#fff';u.dataset.t=t;u.classList.remove('ultgo');void u.offsetWidth;u.classList.add('ultgo');
-  cam.shake=c===1?.5:.3;speak(['','Tuyệt chiêu! Sút lửa!','Thần tốc!','Đóng băng tất cả!'][c]||'');}
+  cam.shake=c===1?.5:.3;speak(['','Tuyệt chiêu! Sút lửa!','Thần tốc!','Đóng băng tất cả!','Nam châm hút bóng!'][c]||'');}
 function label(p,text){ctx.font='700 8px "Baloo 2",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   const w=ctx.measureText(text).width+8,y=p.y-40;ctx.fillStyle='#071327cc';rr(ctx,p.x-w/2,y-6,w,12,6);ctx.fill();ctx.fillStyle=p.team?'#ffd23f':'#ff8fa3';ctx.fillText(text,p.x,y+.5);}
 function draw(t){const d=DPR;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);
@@ -615,6 +627,8 @@ function draw(t){const d=DPR;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.
   const items=[...ps.map(p=>[p.y,p]),[ball.y-2,null]].sort((a,b)=>a[0]-b[0]);
   for(const [,p] of items)p?player(p,t):drawBall();
   for(const q of projs)drawTool(ctx,2,q.x,q.y,q.r,1.1,1);
+  if(ball.magT>0&&ps[ball.mag]){const m=ps[ball.mag];ctx.strokeStyle='#c084fcbb';ctx.lineWidth=2;ctx.setLineDash([4,4]);ctx.lineDashOffset=-nowT*40;ctx.beginPath();ctx.moveTo(ball.x,ball.y-3);ctx.quadraticCurveTo((ball.x+m.x)/2,(ball.y+m.y)/2-30,m.x,m.y-12);ctx.stroke();ctx.setLineDash([]);
+    for(let i=0;i<4;i++){const a=nowT*8+i*1.57;star(ball.x+Math.cos(a)*9,ball.y-3+Math.sin(a)*9,2,'#e9d5ff');}}
   for(let i=0;i<trail.length;i++){const [x,y]=trail[i],k=i/trail.length;ctx.globalAlpha=k*.85;ctx.fillStyle=k>.6?'#ffe14d':k>.3?'#ff8a3d':'#ff3b1f';ctx.beginPath();ctx.arc(x+(Math.random()-.5)*2,y-4+(Math.random()-.5)*2,1.5+k*5,0,7);ctx.fill();}ctx.globalAlpha=1;
   for(const p of ps){if(p.frozenT>0||p.frz){ctx.fillStyle='#bfeaff66';ctx.strokeStyle='#e8f8ff';ctx.lineWidth=1;rr(ctx,p.x-10,p.y-32,20,38,4);ctx.fill();ctx.stroke();
       ctx.strokeStyle='#ffffffaa';ctx.beginPath();ctx.moveTo(p.x-6,p.y-28);ctx.lineTo(p.x-2,p.y-20);ctx.moveTo(p.x+5,p.y-10);ctx.lineTo(p.x+7,p.y-4);ctx.stroke();star(p.x+7,p.y-30,2.5,'#fff');}
@@ -703,7 +717,7 @@ async function joinRoom(asHost){if(!window.Peer)return;if(!needName())return;
   audioInit();landscape();onMsg('Đang vào phòng…');setOnlineEnabled(false);
   try{net=await makeNet(asHost,code);}catch(e){onMsg(e.message||'Không vào được phòng, thử lại nhé.');setOnlineEnabled(true);return;}
   roomCode=code;mode=asHost?'host':'client';hostPeer=null;mySlot=-1;lastG=null;evSeen=-1;slots=new Map();hostWait=0;for(const k in lastSeen)delete lastSeen[k];
-  await net.presence({nm:myName,tm:myTeam,in:{...inp}}).catch(()=>{});
+  await net.presence({nm:myName,tm:myTeam,sk:mySkill,in:{...inp}}).catch(()=>{});
   if(asHost){await net.presence({host:1}).catch(()=>{});state='wait';score=[0,0];time=MATCH;kickoff(0);}
   else state='wait';
   netUnsub=net.onPeers(ch=>{if(hostPeer&&ch.left.some(p=>p.peer===hostPeer)&&mode==='client'){leaveRoom('Chủ phòng đã rời phòng.');}},()=>{if(net)leaveRoom('Mất kết nối phòng.');});
@@ -719,7 +733,7 @@ async function leaveRoom(msg){const n=net;net=null;if(netUnsub)try{netUnsub();}c
 $('leave').addEventListener('click',()=>leaveRoom());$('leave2').addEventListener('click',()=>{if(mode==='solo'){$('end').hidden=true;$('start').hidden=false;state='menu';}else leaveRoom();});
 $('quit').addEventListener('click',()=>{if(mode!=='solo')leaveRoom();else{state='menu';$('end').hidden=true;$('start').hidden=false;$('flash').style.opacity=0;}});
 $('swap').addEventListener('click',()=>{myTeam^=1;pickTeam(myTeam);if(net)net.presence({tm:myTeam}).catch(()=>{});});
-$('startm').addEventListener('click',()=>{if(mode!=='host'||state!=='wait')return;en[0]=en[1]=0;score=[0,0];time=MATCH;kickoff(0);state='play';fx('kickoff');$('roomov').hidden=true;$('s0').textContent=$('s1').textContent='0';});
+$('startm').addEventListener('click',()=>{if(mode!=='host'||state!=='wait')return;en[0]=en[1]=0;for(const k in hEn)delete hEn[k];score=[0,0];time=MATCH;kickoff(0);state='play';fx('kickoff');$('roomov').hidden=true;$('s0').textContent=$('s1').textContent='0';});
 
 const PREF=[4,2,3,1];
 function assignSlots(peers){const here=new Map();
@@ -730,15 +744,16 @@ function assignSlots(peers){const here=new Map();
     for(const t of [want,1-want]){const s=PREF.map(i=>i+t*5).find(i=>!used.has(i));if(s!==undefined){slots.set(peer,s);used.add(s);break;}}}
   humans=new Map();ps.forEach(p=>p.nm='');
   for(const [peer,slot] of slots){const p=here.get(peer);ps[slot].nm=cleanName(p.presence.nm)||'Ai đó';
+    hSk[peer]=p.sameTab?mySkill:cl(num(p.presence.sk)|0,1,4)||1;
     humans.set(slot,{I:p.sameTab?inp:(p.presence.in&&typeof p.presence.in==='object'?p.presence.in:{x:0,y:0,s:0,p:0,w:0}),key:peer});}
   return here.size;}
 const r1=v=>Math.round(v*10)/10,r2=v=>Math.round(v*100)/100;
 function hostTick(dt){const peers=net.peers(),me_=peers.find(p=>p.sameTab);if(me_)myPeer=me_.peer;
   const count=assignSlots(peers);mySlot=slots.has(myPeer)?slots.get(myPeer):-1;
-  simulate(dt);
+  simulate(dt*GS);
   const g={st:state,t:r1(time),s:score,sc:scorer,b:[r1(ball.x),r1(ball.y),ball.vx|0,ball.vy|0],
     p:ps.map(p=>[r1(p.x),r1(p.y),r2(p.fx),r2(p.fy),p.vx|0,p.vy|0,p.kickT>0?1:0,p.pose,r2(p.stam),p.item,p.swingT>0?1:0]),en:en.map(r2),bf:r2(ball.fire||0),ba:r2(ball.air||0),bam:r2(ball.airMax||0),fz:ps.map(p=>(p.frozenT>0?1:0)+(p.boostT>0?2:0)),it:tools.map(i=>[r1(i.x),r1(i.y),i.k]),pj:projs.map(q=>[r1(q.x),r1(q.y),r2(q.r)]),o:owner?ps.indexOf(owner):-1,
-    c:[...slots].map(([peer,slot])=>[slot,peer,ps[slot].nm]),e:evq.slice()};
+    c:[...slots].map(([peer,slot])=>[slot,peer,ps[slot].nm,r2(hEn[peer]||0),hSk[peer]||1]),mg:ball.magT>0?ball.mag:-1,e:evq.slice()};
   net.presence({g}).catch(()=>{});
   advT-=dt;if(advT<=0&&room){advT=2;room.presence({adv:{code:roomCode,n:myName,c:count,st:state}}).catch(()=>{});}
   if(state==='wait')renderRoom(g);}
@@ -758,13 +773,13 @@ function applyG(g,first){if(!g||!Array.isArray(g.p)||!Array.isArray(g.b))return;
   const s=Array.isArray(g.s)?g.s.map(num):[0,0];scorer=num(g.sc);
   g.p.slice(0,10).forEach((a,i)=>{const p=ps[i];if(!Array.isArray(a))return;p.tx=num(a[0]);p.ty=num(a[1]);p.fx=num(a[2]);p.fy=num(a[3]);p.vx=num(a[4]);p.vy=num(a[5]);if(a[6])p.kickT=.18;p.pose=num(a[7])|0;p.stam=cl(num(a[8]),0,1);p.item=num(a[9])===2?2:num(a[9])===1?1:0;p.swing=num(a[10])?1:0;if(first){p.x=p.tx;p.y=p.ty;}});
   {const o=num(g.o)|0;owner=o>=0&&o<10?ps[o]:null;}
-  if(Array.isArray(g.en)){en[0]=cl(num(g.en[0]),0,1);en[1]=cl(num(g.en[1]),0,1);}ball.fire=num(g.bf);ball.air=num(g.ba);ball.airMax=num(g.bam);
+  if(Array.isArray(g.en)){en[0]=cl(num(g.en[0]),0,1);en[1]=cl(num(g.en[1]),0,1);}ball.fire=num(g.bf);{const m=num(g.mg)|0;ball.magT=m>=0&&m<10?.1:0;ball.mag=m;}ball.air=num(g.ba);ball.airMax=num(g.bam);
   if(Array.isArray(g.fz))g.fz.slice(0,10).forEach((v,i)=>{v=num(v)|0;ps[i].frz=v&1;ps[i].bst=(v&2)?1:0;});
   tools.length=0;if(Array.isArray(g.it))for(const a of g.it.slice(0,4))if(Array.isArray(a))tools.push({x:num(a[0]),y:num(a[1]),k:num(a[2])===2?2:1});
   projs.length=0;if(Array.isArray(g.pj))for(const a of g.pj.slice(0,10))if(Array.isArray(a))projs.push({x:num(a[0]),y:num(a[1]),r:num(a[2])});
   ball.tx=num(g.b[0]);ball.ty=num(g.b[1]);ball.vx=num(g.b[2]);ball.vy=num(g.b[3]);if(first){ball.x=ball.tx;ball.y=ball.ty;}
   ps.forEach(p=>p.nm='');mySlot=-1;
-  if(Array.isArray(g.c))for(const c of g.c){if(!Array.isArray(c))continue;const sl=num(c[0])|0;if(sl<0||sl>9)continue;ps[sl].nm=cleanName(c[2]);if(c[1]===myPeer)mySlot=sl;}
+  if(Array.isArray(g.c))for(const c of g.c){if(!Array.isArray(c))continue;const sl=num(c[0])|0;if(sl<0||sl>9)continue;ps[sl].nm=cleanName(c[2]);if(c[1]===myPeer){mySlot=sl;cEn=cl(num(c[3]),0,1);}}
   if(Array.isArray(g.e)){let mx=evSeen;for(const e of g.e){if(!Array.isArray(e))continue;const q=num(e[0]);if(q>evSeen&&evSeen>=0)evt(String(e[1]),e[2]);mx=Math.max(mx,q);}evSeen=mx<0?0:mx;}
   const scoreChanged=s[0]!==score[0]||s[1]!==score[1];score=s;$('s0').textContent=score[0];$('s1').textContent=score[1];
   if(state==='goal'&&prev!=='goal'&&!first&&scoreChanged)showGoal(scorer);
@@ -784,7 +799,7 @@ $('again').addEventListener('click',()=>{if(mode==='host'){state='wait';kickoff(
 /* ================= VÒNG LẶP ================= */
 function loop(ts){const t=ts/1000,dt=Math.min(t-(last||t),1/30);last=t;
   readInput(dt);
-  if(mode==='host'&&net)hostTick(dt);else if(mode==='client'&&net)clientTick(dt);else simulate(dt);
+  if(mode==='host'&&net)hostTick(dt);else if(mode==='client'&&net)clientTick(dt);else simulate(dt*GS);
   if(mode!=='client'){ball.rot+=Math.hypot(ball.vx,ball.vy)*dt/6;}
   for(const p of ps){p.kickT-=dt;p.anim+=Math.hypot(p.vx,p.vy)*dt*.13;}
   nowT=t;if(mode!=='client')for(const p of ps){p.pose=p.koT>0?3:p.slideT>0?1:p.downT>0?2:0;p.swing=p.swingT>0?1:0;}
@@ -793,8 +808,12 @@ function loop(ts){const t=ts/1000,dt=Math.min(t-(last||t),1/30);last=t;
   {const it=myP&&myP.item>0&&!(myP.koT>0)&&myP.pose!==3?myP.item:0,bE=$('bE');bE.classList.toggle('show',!!it);const l=it===2?'NÉM':'GÕ';if($('lE').textContent!==l)$('lE').textContent=l;}
   {const vv=window.visualViewport,pw=vv?vv.width:innerWidth,ph=vv?vv.height:innerHeight,want=ph>pw&&state!=='menu';
     const typing=document.activeElement&&document.activeElement.tagName==='INPUT';if(want!==rot&&!typing)layout();if(state==='menu')unlockOri();}
-  {const t=myP?myP.team:0,full=en[t]>=1&&state==='play';$('bS').classList.toggle('show',full&&!!myP);
-    for(const k of [0,1]){const e=$('e'+k);e.firstChild.style.width=Math.round(en[k]*100)+'%';e.classList.toggle('full',en[k]>=1);}}
+  {const myKey=mode==='solo'?'local':myPeer,me_en=mode==='client'?cEn:(hEn[myKey]||0),full=me_en>=1&&state==='play'&&!!myP;
+    const bs=$('bS');bs.classList.toggle('show',full);bs.classList.toggle('dim',mySkill===1&&owner!==myP||mySkill===4&&owner===myP);
+    const lab=['','SÚT\nLỬA','THẦN\nTỐC','ĐÓNG\nBĂNG','NAM\nCHÂM'][mySkill];if($('lS').textContent!==lab)$('lS').textContent=lab;
+    if($('enl').textContent!==SKN[mySkill])$('enl').textContent=SKN[mySkill];
+    const e0=$('e0'),e1=$('e1');e0.firstChild.style.width=Math.round(me_en*100)+'%';e0.classList.toggle('full',me_en>=1);
+    e1.style.display=mode==='solo'?'':'none';e1.firstChild.style.width=Math.round(en[1]*100)+'%';e1.classList.toggle('full',en[1]>=1);}
   if(ball.fire>0){trail.push([ball.x,ball.y]);if(trail.length>16)trail.shift();}else if(trail.length)trail.shift();
   cam.shake=Math.max(0,(cam.shake||0)-dt);
   camUpdate(dt);
@@ -803,9 +822,11 @@ function loop(ts){const t=ts/1000,dt=Math.min(t-(last||t),1/30);last=t;
   const s=Math.ceil(time);$('clock').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');requestAnimationFrame(loop);}
 
 document.querySelectorAll('.lv button').forEach(b=>b.addEventListener('click',()=>{level=+b.dataset.l;document.querySelectorAll('.lv button').forEach(x=>x.setAttribute('aria-pressed',x===b));}));
-function begin(){en[0]=en[1]=0;audioInit();landscape();mode='solo';
+function begin(){en[0]=en[1]=0;for(const k in hEn)delete hEn[k];hSk.local=mySkill;audioInit();landscape();mode='solo';
   score=[0,0];$('s0').textContent=$('s1').textContent='0';time=MATCH;kickoff(0);state='play';$('start').hidden=true;$('end').hidden=true;AU.lastTick=-1;snd('kickoff');speak('Trận đấu bắt đầu!');}
 $('play').addEventListener('click',begin);
+function pickSkill(k){mySkill=k;try{localStorage.setItem('fs_sk',k);}catch(e){}document.querySelectorAll('.skp button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.k===k));if(net)net.presence({sk:k}).catch(()=>{});}
+document.querySelectorAll('.skp button').forEach(b=>b.addEventListener('click',()=>pickSkill(+b.dataset.k)));pickSkill(mySkill);
 $('fun').addEventListener('click',()=>{funny=!funny;$('fun').setAttribute('aria-pressed',funny);$('fun').textContent='Chế độ vui: búa & cờ lê · '+(funny?'BẬT':'TẮT');if(!funny){tools.length=0;projs.length=0;ps.forEach(p=>p.item=0);}});
 layout();kickoff(0);requestAnimationFrame(loop);try{document.fonts.ready.then(()=>buildBg());}catch(e){}
 }
